@@ -22,7 +22,7 @@ bool_val    #[t|f]
 {separator}*    { /* do nothing */ }
 "print-num"     { return print_num; }
 "print-bool"    { return print_bool; }
-[()\+\-*/><=]   { flag = 0;
+[\+\-*/><=]   { flag = 0;
                     for(int j=0; j<i; j++){
                         if(strcmp(yytext, arr[j])==0)
                             {flag = 1; break;}
@@ -32,6 +32,7 @@ bool_val    #[t|f]
                         strcpy(arr[i++], "Lisp Operator"); 
                     }
                     return yytext[0]; }
+[()]            { return yytext[0]; }
 "mod"           { flag = 0;
                     for(int j=0; j<i; j++){
                         if(strcmp(yytext, arr[j])==0)
