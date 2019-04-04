@@ -539,8 +539,13 @@ char *yytext;
 #line 2 "lex.l"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "y.tab.h"
-#line 544 "lex.yy.c"
+
+char arr[100][100];
+int i = 0;
+int flag = 0;
+#line 549 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -758,9 +763,9 @@ YY_DECL
 		}
 
 	{
-#line 15 "lex.l"
+#line 20 "lex.l"
 
-#line 764 "lex.yy.c"
+#line 769 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -828,91 +833,146 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case YY_STATE_EOF(INITIAL):
-#line 16 "lex.l"
+#line 21 "lex.l"
 { return 0; }
 	YY_BREAK
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 17 "lex.l"
+#line 22 "lex.l"
 { /* do nothing */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 18 "lex.l"
+#line 23 "lex.l"
 { return print_num; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 19 "lex.l"
+#line 24 "lex.l"
 { return print_bool; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 20 "lex.l"
-{ return yytext[0]; }
+#line 25 "lex.l"
+{ flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yytext, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yytext); 
+                        strcpy(arr[i++], "Lisp Operator"); 
+                    }
+                    return yytext[0]; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 21 "lex.l"
-{ return mod; }
+#line 35 "lex.l"
+{ flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yytext, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yytext); 
+                        strcpy(arr[i++], "Lisp Operator"); 
+                    }
+                    return mod; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 22 "lex.l"
-{ return and; }
+#line 45 "lex.l"
+{ flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yytext, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yytext); 
+                        strcpy(arr[i++], "Logical Operator"); 
+                    }
+                    return and; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 23 "lex.l"
-{ return or; }
+#line 55 "lex.l"
+{ flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yytext, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yytext); 
+                        strcpy(arr[i++], "Logical Operator"); 
+                    }
+                    return or; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "lex.l"
-{ return not; }
+#line 65 "lex.l"
+{ flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yytext, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yytext); 
+                        strcpy(arr[i++], "Logical Operator"); 
+                    }
+                    return not; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 25 "lex.l"
+#line 75 "lex.l"
 { return _if; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 26 "lex.l"
+#line 76 "lex.l"
 { return _define; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 27 "lex.l"
+#line 77 "lex.l"
 { return fun; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 28 "lex.l"
+#line 78 "lex.l"
 { yylval.ival = atoi(yytext); return number; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 29 "lex.l"
+#line 79 "lex.l"
 { yylval.bval = (yytext[1] == 't') ? 1 : 0 ; return bool_val; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 30 "lex.l"
-{ yylval.str = strdup(yytext); return id; }
+#line 80 "lex.l"
+{   yylval.str = strdup(yytext); 
+                    flag = 0;
+                    for(int j=0; j<i; j++){
+                        if(strcmp(yylval.str, arr[j])==0)
+                            {flag = 1; break;}
+                    }
+                    if(flag==0){
+                        strcpy(arr[i++], yylval.str); 
+                        strcpy(arr[i++], "Function"); 
+                    }
+                    return id; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 31 "lex.l"
+#line 91 "lex.l"
 { printf("unexpected char: %s\n", yytext); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 32 "lex.l"
+#line 92 "lex.l"
 ECHO;
 	YY_BREAK
-#line 916 "lex.yy.c"
+#line 976 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1923,12 +1983,13 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 32 "lex.l"
+#line 92 "lex.l"
 
 
 
 void yyerror(char *msg) {
     printf("error\n");
     // printf("%s\n", msg);
+    
     printf("line number: %d, msg: %s, char: %s\n", yylineno, msg, yytext );
 }

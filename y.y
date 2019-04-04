@@ -6,7 +6,8 @@
 extern int yylex(void);
 extern void yyerror(char *);
 extern FILE * yyin;
-
+extern char arr[100][100];
+extern int i;
 %}
 
 %union {
@@ -18,12 +19,12 @@ extern FILE * yyin;
 %token <ival> number
 %token <bval> bool_val
 %token <str> id
-%type <np> PORGRAM STMT STMTS PRINT_STMT EXPS EXP NUM_OP LOG_OP
+%type <np> PROGRAM STMT STMTS PRINT_STMT EXPS EXP NUM_OP LOG_OP
 %type <np> IF_EXP TEST_EXP THEN_EXP ELSE_EXP
 %type <np> DEF_STMT VARIABLE
 %type <np> FUN_EXP FUN_IDs FUN_BODY FUN_CALL PARAMS PARAM FUN_NAME VARIABLES
 %%
-PORGRAM         :   STMTS                                   {  }
+PROGRAM         :   STMTS                                   {  }
                 ;
 STMTS           :   STMT STMTS                              {  }
                 |   STMT                                    {  }
@@ -107,9 +108,16 @@ int main(int argc, char *argv[]) {
     int a = yyparse();
     fclose(yyin);
     if(a == 0) {
-     
+        printf("-------------------------------\n");
+        printf("Variable\tType\n");
+        printf("-------------------------------\n");
+        for(int j=0; j<i; j+=2){
+            
+            printf("%s\t\t%s\n", arr[j], arr[j+1]);
+        }
         printf("Parsed successfuly!\n");
     } else {
+        
         /* yyerror() */
     }
   
